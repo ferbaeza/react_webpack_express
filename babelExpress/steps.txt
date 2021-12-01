@@ -1,0 +1,132 @@
+//STEP ONE: Express
+
+//--Inicializar proyecto
+npm init -y
+
+//--Install express
+npm install --save express
+
+//--Create a Server folder on root folder
+//--Create a index.js with the express code
+/*
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+const mockResponse = {
+  foo: 'bar',
+  bar: 'foo'
+};
+app.get('/api', (req, res) => {
+  res.send(mockResponse);
+});
+app.get('/', (req, res) => {
+ res.status(200).send('Hello World from the server!');
+});
+app.listen(port, function () {
+ console.log('App listening on port: ' + port);
+});
+*/
+
+
+//Install nodemon
+
+npm i -g nodemon
+
+//Add the scripts to package.json
+"scripts": {
+    "start": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\""
+  }
+
+//Check the server is running
+npm run start
+//go to localhost:3000
+
+
+//STEP TWO: Webpack
+
+npm install --save-dev webpack webpack-cli
+
+//Add the scripts to package.json
+"scripts": {
+  "start": "node server/index.js",
+  "build": "webpack --mode production",
+  "test": "echo \"Error: no test specified\""
+}
+
+
+//--Create a src folder on root folder
+//--Create a index.js 
+npm run build
+
+
+//STEP THREE: Babel
+
+npm install --save-dev @babel /core @babel /preset-env @babel /preset-react babel-loader   -> Da error la instalacion
+npm install --save-dev @babel/core
+yarn add @babel/core --dev
+
+npm install --save-dev babel-loader @babel/core
+npm install --save-dev @babel/preset-react
+npm install babel-preset-env --save-dev
+
+STEP THREE: React
+
+npm install --save react react-dom
+
+//In the folder /src, add an index.html
+
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximun-scale=1">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>React Boilerplate</title>
+        </head>
+        <body>
+            <div id="app"></div>
+        </body>
+    </html>
+
+//In the folder /src, add an index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+const Index = () => {
+    return <div>WELCOME TO REACT APP!</div>;
+};
+ReactDOM.render(<Index />,document.getElementById('app'));
+
+
+
+/// To get your React app and webpack to work together
+
+npm install --save-dev html-webpack-plugin
+
+// Add this into webpack.config.js
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const htmlPlugin = new HtmlWebPackPlugin({
+  template: "./src/index.html", 
+  filename: "./index.html"
+});
+module.exports = {
+  entry: "./src/index.js",
+  output: { // NEW
+    path: path.join(__dirname, 'dist'),
+    filename: "[name].js"
+  }, // NEW Ends
+  plugins: [htmlPlugin],
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
+};
